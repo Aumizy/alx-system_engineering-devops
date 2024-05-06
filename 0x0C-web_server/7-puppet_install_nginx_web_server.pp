@@ -1,46 +1,21 @@
-# Setup nginx server
+# Automating project requirements using Puppet, task 7
 
-# Install Nginx package
 package { 'nginx':
-  ensure => 'installed',
+  ensure => installed,
 }
 
-# Set up the Hello World page
+file_line { 'install':
+  ensure => 'present',
+  path   => '/etc/nginx/sites-enabled/default',
+  after  => 'listen 80 default_server;',
+  line   => 'rewrite ^/redirect_me https://www.github.com/aumizy permanent;',
+}
+
 file { '/var/www/html/index.html':
   content => 'Hello World!',
-  owner   => 'www-data',
-  group   => 'www-data',
 }
 
-# Add location block for /redirect_me to Nginx configuration
-file { '/etc/nginx/sites-enabled/default':
-  ensure  => 'file',
-  content => '
-server {
-    listen 80 default_server;
-    listen [::]:80 default_server;
-
-    root /var/www/html;
-    index index.html index.htm;
-
-    server_name _;
-
-    location / {
-        try_files $uri $uri/ =404;
-    }
-
-    location /redirect_me {
-        return 301 https://www.google.com;
-    }
-
-}
-',
-  require => Package['nginx'],
-  notify  => Service['nginx'],
-}
-
-# Ensure Nginx service is running and enabled
 service { 'nginx':
   ensure  => running,
-  enable  => true,
+  require => Package['nginx'],
 }
