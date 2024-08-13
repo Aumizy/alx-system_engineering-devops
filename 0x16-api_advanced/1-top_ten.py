@@ -6,6 +6,8 @@ returns the titles of the first 10 hot posts listed for a given subreddit
 import requests
 
 
+
+
 def top_ten(subreddit):
     """return 10 hottest posts"""
     url = f"https://www.reddit.com/r/{subreddit}/hot.json"
