@@ -63,4 +63,5 @@ To update an application without downtime, the master will proceed with a progre
 
 Write a simple Bash script to reload Gunicorn in a graceful way.
 
+
 alx-system_engineering-devops/0x1A-application_server/README.md at master · aumizy/alx-system_engineering-devops
